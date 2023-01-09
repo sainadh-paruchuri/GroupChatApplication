@@ -4,16 +4,17 @@ exports.signup=async (req,res)=>{
     console.log(req.body);
     const { username, email,phone,password }=req.body
     const user=await User.findOne({where:{email:email}})
-    if(user!==null){
-        return res.status(400).json({msg:'User already exists'})
-    }
+    
     if(username=='' || email=='' || phone=='' || password==''){
-        return res.status(400).json({err:'Something is missing'})
+        return res.status(400).json({msg:'Something is missing'})
+    }
+    if(user!==null){
+        return res.status(403).json({msg:'User already exists'})
     }
     bcrypt.hash(password,10,async(err,hash)=>{
             if(err){
                 console.log(err);
-                res.status(400).json({err:'Something Went Wrong'})
+                res.status(400).json({msg:'Something Went Wrong'})
             }else{
                 await User.create({
                     username:username,

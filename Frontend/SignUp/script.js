@@ -16,7 +16,14 @@ cbutton.addEventListener('click',event=>{
         password:password
     }).then((response) => {
         console.log(response);
+        alert(response.data.msg)
+        document.getElementById('username').value=''
+        document.getElementById('email').value=''
+        document.getElementById('phone').value=''
+        document.getElementById('password').value=''
     }).catch((err) => {
         console.log(err);
+        alert(err.response.data.msg)
     });
+    
 })
