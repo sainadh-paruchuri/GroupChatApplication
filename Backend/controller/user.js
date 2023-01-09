@@ -1,5 +1,8 @@
 const User=require('../model/user')
 const bcrypt=require('bcrypt')
+const jwt=require('jsonwebtoken');
+
+
 exports.signup=async (req,res)=>{
     console.log(req.body);
     const { username, email,phone,password }=req.body
@@ -33,5 +36,16 @@ exports.login=async (req,res)=>{
 console.log(req.body);
 const {email,password}=req.body;
 const user=User.findOne({where:{email:email}})
-
+if(user===null){
+    return res.status(404).json({msg:'User not found'})
+}
+else{
+    const match=bcrypt.compare(password,user.password)
+    if(match){
+        const token=jwt.sign(user.id,'')
+        res.status(200).json({msg:'login successful'})
+    }else{
+        res.status(401).json({msg:'User not authorized'})
+    }
+}
 }
