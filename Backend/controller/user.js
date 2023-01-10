@@ -35,17 +35,29 @@ exports.signup=async (req,res)=>{
 exports.login=async (req,res)=>{
 console.log(req.body);
 const {email,password}=req.body;
-const user=User.findOne({where:{email:email}})
-if(user===null){
-    return res.status(404).json({msg:'User not found'})
-}
-else{
-    const match=bcrypt.compare(password,user.password)
-    if(match){
-        const token=jwt.sign(user.id,'')
-        res.status(200).json({msg:'login successful'})
-    }else{
-        res.status(401).json({msg:'User not authorized'})
+ if(email.length<=0||email===''||password.length<=0||password===''){
+        return res.status(403).json({msg:'email or password are wrong'})
     }
-}
+    else{
+        User.findAll({where:{email:email}})
+        .then(result=>{
+            console.log(result==0)
+            if(result==0){
+                return res.status(404).json({msg:'User not found'})
+            }
+            if(result[0].email==email){
+            console.log(result[0].password);
+            bcrypt.compare(password,result[0].password,(err,results)=>{
+                 if(results==true){
+                res.status(200).json({msg:'User login sucessfully',token:jwt.sign({id:result[0].id},'f335e76783e2c156cfccbc5179ab50ad2ec6d96e')})
+            }
+            else{
+                res.status(401).json({msg:'User not authorized'})
+            }
+
+            })
+           
+             }
+        })
+    }
 }
