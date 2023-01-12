@@ -17,3 +17,28 @@ send_button.addEventListener('click',event=>{
     });
 })
 
+window.addEventListener('DOMContentLoaded',(event)=>{
+    const token=localStorage.getItem('token')
+    axios.get('http://localhost:4000/getmessages',{headers:{'Authorization':token}})
+    .then(result=>{
+        console.log(result);
+        result.data.messages.forEach(message => {
+            if(result.data.uid==message.userId){
+                const div=document.createElement('div')
+                div.appendChild(document.createTextNode(`You:${message.message}`))
+                message_container.appendChild(div)
+                // message_container.innerHtml+=`<div>You:${message.message}</div>`
+            }else{
+                const div=document.createElement('div')
+                div.appendChild(document.createTextNode(`${message.name}:${message.message}`))
+                message_container.appendChild(div)
+                // message_container.innerHtml+=`<div>${message.name}:${message.message}`
+            }
+            
+        });
+        
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+})
