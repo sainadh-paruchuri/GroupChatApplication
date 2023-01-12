@@ -12,9 +12,11 @@ cbutton.addEventListener('click',event=>{
         password:password
     }).then((response) => {
         console.log(response);
+        localStorage.setItem('token',response.data.token)
         alert(response.data.msg)
         document.getElementById('email').value=''
         document.getElementById('password').value=''
+        window.location.href='../chat/chat.html';
     }).catch((err) => {
         console.log(err);
         alert(err.response.data.msg)
