@@ -6,6 +6,7 @@ send_button.addEventListener('click',event=>{
     event.preventDefault();
     const token=localStorage.getItem('token')
     const message_input=document.getElementById('message_input').value;
+    document.getElementById('message_input').value=''
     console.log(message_input);
     console.log(token);
     axios.post('http://localhost:4000/message',{
@@ -17,11 +18,13 @@ send_button.addEventListener('click',event=>{
     });
 })
 
-window.addEventListener('DOMContentLoaded',(event)=>{
+// window.addEventListener('DOMContentLoaded',(event)=>{
+    setInterval(()=>{
     const token=localStorage.getItem('token')
     axios.get('http://localhost:4000/getmessages',{headers:{'Authorization':token}})
     .then(result=>{
         console.log(result);
+        message_container.innerHTML='';
         result.data.messages.forEach(message => {
             if(result.data.uid==message.userId){
                 const div=document.createElement('div')
@@ -41,4 +44,4 @@ window.addEventListener('DOMContentLoaded',(event)=>{
     .catch(err=>{
         console.log(err);
     })
-})
+},1000)
