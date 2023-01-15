@@ -1,11 +1,14 @@
 const send_button=document.getElementById('send_button');
 const message_container=document.getElementById('message-container');
+const msg=[]
 
 
 send_button.addEventListener('click',event=>{
     event.preventDefault();
     const token=localStorage.getItem('token')
     const message_input=document.getElementById('message_input').value;
+    msg.push(message_input)
+    localStorage.setItem('messages',msg)
     document.getElementById('message_input').value=''
     console.log(message_input);
     console.log(token);
