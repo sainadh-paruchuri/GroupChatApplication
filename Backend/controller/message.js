@@ -3,6 +3,7 @@ const Message=require('../model/message');
 exports.message=(req,res)=>{
     try{
     console.log(req.body);
+    console.log(req.params);
     console.log(req.user);
     const { message }=req.body
     Message.create({
