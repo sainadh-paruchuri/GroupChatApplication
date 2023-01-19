@@ -101,3 +101,52 @@ else{
 }
     
 }
+
+exports.admin=async (req,res)=>{
+    const groupId=req.params.id;
+  let userId = req.user.id;
+  const userupdatedid = req.body.userId;
+
+  let checkad = await Usergroup.findOne({
+    where: { groupId: groupId, userId: userId},
+  });
+
+  if (checkad.isAdmin == true ||checkad.isAdmin=='true') {
+    Usergroup.update(
+      { isAdmin: true },
+      { where: { userId: userupdatedid, groupId: groupId } }
+    )
+      .then((result) => {
+        res.json("user made as group admin");
+      })
+      .catch((err) => {
+        res.json("something went wrong");
+      });
+  } else {
+    res.json("you are not admin !ask admin to make you admin");
+  }
+}
+
+exports.remove=async (req,res)=>{
+    const groupId=req.params.id;
+  let userId = req.user.id;
+  const userupdatedid = req.body.userId;
+
+  let checkad = await Usergroup.findOne({
+    where: { groupId: groupId, userId: userId},
+  });
+
+  if (checkad.isAdmin == true ||checkad.isAdmin=='true') {
+    Usergroup.destroy(
+      { where: { userId: userupdatedid, groupId: groupId } }
+    )
+      .then((result) => {
+        res.json("user remove from the group");
+      })
+      .catch((err) => {
+        res.json("something went wrong");
+      });
+  } else {
+    res.json("you are not admin !ask admin to make you admin");
+  }
+}

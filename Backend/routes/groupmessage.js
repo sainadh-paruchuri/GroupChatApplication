@@ -8,5 +8,8 @@ router.post(`/groupmessage/:id`,authenticate.authenticate,groupmessageController
 router.get('/gropumessages/:id',authenticate.authenticate,groupmessageController.getgroupmessages)
 router.get('/getmembers/:id',authenticate.authenticate,groupmessageController.getgroupmembers)
 router.post('/addparticipants/:id',authenticate.authenticate,groupmessageController.addparticipants)
+router.post('/admin/:id',authenticate.authenticate,groupmessageController.admin);
+router.post('/remove/:id',authenticate.authenticate,groupmessageController.remove);
+
 
 module.exports=router;
